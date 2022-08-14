@@ -1,0 +1,9 @@
+<resources>
+    <!-- Basic app theme -->
+    <style name="AppTheme" parent="Theme.AppCompat">
+        <!-- Change the app colours here -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+</resources>
