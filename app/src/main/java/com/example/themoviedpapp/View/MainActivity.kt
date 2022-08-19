@@ -1,15 +1,13 @@
 package com.example.themoviedpapp.View
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.themoviedpapp.Movie
-import com.example.themoviedpapp.MoviesAdapter
+import com.example.themoviedpapp.*
 import com.example.themoviedpapp.Models.MoviesRepository
-import com.example.themoviedpapp.R
 
 
 class MainActivity : Activity() {
@@ -24,6 +22,10 @@ class MainActivity : Activity() {
     private lateinit var topRatedMoviesLayoutMgr: LinearLayoutManager
     private var topRatedMoviesPage = 1
 
+    private lateinit var upcomingMovies: RecyclerView
+    private lateinit var upcomingMoviesAdapter: MoviesAdapter
+    private lateinit var upcomingMoviesLayoutMgr: LinearLayoutManager
+    private var upcomingMoviesPage = 1
 
 
 
@@ -32,6 +34,8 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        //popularmovies
         popularMovies = findViewById(R.id.popular_movies)
         // horizontalna lista
         popularMoviesLayoutMgr = LinearLayoutManager(
@@ -42,9 +46,10 @@ class MainActivity : Activity() {
         popularMovies.layoutManager = popularMoviesLayoutMgr
 
 
-        popularMoviesAdapter = MoviesAdapter(mutableListOf())
+        popularMoviesAdapter = MoviesAdapter(mutableListOf()) { movie -> showMovieDetails(movie) }
         popularMovies.adapter = popularMoviesAdapter
 
+        //top rated movies
         topRatedMovies = findViewById(R.id.top_rated_movies)
         topRatedMoviesLayoutMgr = LinearLayoutManager(
             this,
@@ -52,12 +57,24 @@ class MainActivity : Activity() {
             false
         )
         topRatedMovies.layoutManager = topRatedMoviesLayoutMgr
-        topRatedMoviesAdapter = MoviesAdapter(mutableListOf())
+        topRatedMoviesAdapter = MoviesAdapter(mutableListOf()) { movie -> showMovieDetails(movie) }
         topRatedMovies.adapter = topRatedMoviesAdapter
+
+        //upcoming movies
+        upcomingMovies = findViewById(R.id.upcoming_movies)
+        upcomingMoviesLayoutMgr = LinearLayoutManager(
+            this,
+            LinearLayoutManager.HORIZONTAL,
+            false
+        )
+        upcomingMovies.layoutManager = upcomingMoviesLayoutMgr
+        upcomingMoviesAdapter = MoviesAdapter(mutableListOf()) { movie -> showMovieDetails(movie) }
+        upcomingMovies.adapter = upcomingMoviesAdapter
 
 
         getPopularMovies()
         getTopRatedMovies()
+        getUpcomingMovies()
 
     }
 
@@ -126,4 +143,43 @@ class MainActivity : Activity() {
         attachTopRatedMoviesOnScrollListener()
     }
 
+    private fun getUpcomingMovies() {
+        MoviesRepository.getUpcomingMovies(
+            upcomingMoviesPage,
+            ::onUpcomingMoviesFetched,
+            ::onError
+        )
+    }
+
+    private fun attachUpcomingMoviesOnScrollListener() {
+        upcomingMovies.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val totalItemCount = upcomingMoviesLayoutMgr.itemCount
+                val visibleItemCount = upcomingMoviesLayoutMgr.childCount
+                val firstVisibleItem = upcomingMoviesLayoutMgr.findFirstVisibleItemPosition()
+
+                if (firstVisibleItem + visibleItemCount >= totalItemCount / 2) {
+                    upcomingMovies.removeOnScrollListener(this)
+                    upcomingMoviesPage++
+                    getUpcomingMovies()
+                }
+            }
+        })
+    }
+
+    private fun onUpcomingMoviesFetched(movies: List<Movie>) {
+        upcomingMoviesAdapter.appendMovies(movies)
+        attachUpcomingMoviesOnScrollListener()
+    }
+
+    private fun showMovieDetails(movie: Movie) {
+        val intent = Intent(this, MovieDetails::class.java)
+        intent.putExtra(MOVIE_BACKDROP, movie.backdropPath)
+        intent.putExtra(MOVIE_POSTER, movie.posterPath)
+        intent.putExtra(MOVIE_TITLE, movie.title)
+        intent.putExtra(MOVIE_RATING, movie.rating)
+        intent.putExtra(MOVIE_RELEASE_DATE, movie.releaseDate)
+        intent.putExtra(MOVIE_OVERVIEW, movie.overview)
+        startActivity(intent)
+    }
 }

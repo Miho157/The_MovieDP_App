@@ -81,4 +81,35 @@ object MoviesRepository {
                 }
             })
     }
+
+    fun getUpcomingMovies(
+        page: Int = 1,
+        onSuccess: (movies: List<Movie>) -> Unit,
+        onError: () -> Unit
+    ) {
+        api.getUpcomingMovies(page = page)
+            .enqueue(object : Callback<GetMovieResponses> {
+                override fun onResponse(
+                    call: Call<GetMovieResponses>,
+                    response: Response<GetMovieResponses>
+                ) {
+                    if (response.isSuccessful) {
+                        val responseBody = response.body()
+
+                        if (responseBody != null) {
+                            onSuccess.invoke(responseBody.movies)
+                        } else {
+                            onError.invoke()
+                        }
+                    } else {
+                        onError.invoke()
+                    }
+                }
+
+                override fun onFailure(call: Call<GetMovieResponses>, t: Throwable) {
+                    onError.invoke()
+                }
+            })
+    }
+
 }
