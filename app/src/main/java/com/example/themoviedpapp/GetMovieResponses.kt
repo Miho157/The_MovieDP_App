@@ -1,5 +1,6 @@
 package com.example.themoviedpapp
 
+import com.example.themoviedpapp.Models.Movie
 import com.google.gson.annotations.SerializedName
 
 data class GetMovieResponses (
