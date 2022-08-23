@@ -46,7 +46,7 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
 
-    //ViewModel and livedata
+    //com.example.themoviedpapp.ViewModel and livedata
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
 // Support
@@ -55,7 +55,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
-// ViewModel and LiveData
+// com.example.themoviedpapp.ViewModel and LiveData
 // https://developer.android.com/jetpack/androidx/releases/lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 // Retrofit

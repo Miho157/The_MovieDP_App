@@ -1,20 +1,14 @@
 package com.example.themoviedpapp.View
 
-import MyViewModelFactory
-import ViewModel.MainViewModel
-import android.app.Activity
-import android.content.Intent
+import com.example.themoviedpapp.ViewModel.MyViewModelFactory
+import com.example.themoviedpapp.ViewModel.MainViewModel
 import android.os.Bundle
-import android.widget.Toast
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.themoviedpapp.*
 import com.example.themoviedpapp.Models.Api
-import com.example.themoviedpapp.Models.Movie
 import com.example.themoviedpapp.Models.MoviesRepository
 import com.example.themoviedpapp.databinding.ActivityMainBinding
 
@@ -34,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        //get viewmodel instance using MyViewModelFactory
+        //get viewmodel instance using com.example.themoviedpapp.ViewModel.MyViewModelFactory
         viewModel =
             ViewModelProvider(this, MyViewModelFactory(MoviesRepository)).get(
                 MainViewModel::class.java

@@ -1,4 +1,4 @@
-package ViewModel
+package com.example.themoviedpapp.ViewModel
 
 import android.content.Context
 import android.content.Intent
