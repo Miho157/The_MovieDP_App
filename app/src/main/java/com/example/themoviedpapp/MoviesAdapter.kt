@@ -12,9 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.example.themoviedpapp.Models.Movie
 
 
-class MoviesAdapter(
-
-) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
+class MoviesAdapter : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
 
 
 
@@ -35,19 +33,26 @@ class MoviesAdapter(
         return MovieViewHolder(view)
     }
 
-    
-    override fun getItemCount(): Int = movies!!.size
+    override fun getItemCount(): Int {
+        return movies?.size ?: 0
+    }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        movies?.get(position)?.let { holder.bind(it) }
+        movies?.get(position).let {
+            if (it != null) {
+                holder.bind(it)
+            }
+        }
     }
     fun appendMovies(movies: List<Movie>) {
         this.movies?.addAll(movies)
-        this.movies?.let {
-            notifyItemRangeInserted(
-                it.size,
-                movies.size - 1
-            )
+        this.movies.let {
+            if (it != null) {
+                notifyItemRangeInserted(
+                    it.size,
+                    movies.size - 1
+                )
+            }
         }
     }
 
@@ -64,7 +69,11 @@ class MoviesAdapter(
             // listener for when a movie is clicked
             itemView.setOnClickListener { onMovieClick.invoke(movie) }
         }
+
+
+
     }
+
 
 
 

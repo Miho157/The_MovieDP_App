@@ -57,7 +57,7 @@ class MainViewModel (private val repository: MoviesRepository) : ViewModel() {
     private fun attachPopularMoviesOnScrollListener() {
         popularMovies?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int, context: Context) {
-                popularMovies?.setLayoutManager(LinearLayoutManager(context));
+
                 // broj filmova u popularMoviesAdapter
                 val totalItemCount = popularMoviesLayoutMgr.itemCount
                 // filmovi koje trenutno vidimo na ekranu(+ po jedan kojeg ne vidimo sa svake strane)
@@ -84,7 +84,7 @@ class MainViewModel (private val repository: MoviesRepository) : ViewModel() {
     private fun attachTopRatedMoviesOnScrollListener() {
         topRatedMovies?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int, context: Context) {
-                topRatedMovies?.setLayoutManager(LinearLayoutManager(context));
+
                 val totalItemCount = topRatedMoviesLayoutMgr.itemCount
                 val visibleItemCount = topRatedMoviesLayoutMgr.childCount
                 val firstVisibleItem = topRatedMoviesLayoutMgr.findFirstVisibleItemPosition()
@@ -114,7 +114,7 @@ class MainViewModel (private val repository: MoviesRepository) : ViewModel() {
     private fun attachUpcomingMoviesOnScrollListener() {
         upcomingMovies?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int, context: Context) {
-                upcomingMovies?.setLayoutManager(LinearLayoutManager(context));
+
                 val totalItemCount = upcomingMoviesLayoutMgr.itemCount
                 val visibleItemCount = upcomingMoviesLayoutMgr.childCount
                 val firstVisibleItem = upcomingMoviesLayoutMgr.findFirstVisibleItemPosition()

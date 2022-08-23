@@ -7,10 +7,12 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.themoviedpapp.*
 import com.example.themoviedpapp.Models.Api
 import com.example.themoviedpapp.Models.MoviesRepository
 import com.example.themoviedpapp.databinding.ActivityMainBinding
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -44,6 +46,10 @@ class MainActivity : AppCompatActivity() {
             adapter.appendMovies(it)
         })
 
+        popular_movies.layoutManager = LinearLayoutManager(this)
+        top_rated_movies.layoutManager = LinearLayoutManager(this)
+        upcoming_movies.layoutManager = LinearLayoutManager(this)
+
 
         viewModel.errorMessage.observe(this, Observer {
             Log.d(TAG, "errorMessage: $it")
@@ -52,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.getPopularMovies()
         viewModel.getTopRatedMovies()
         viewModel.getUpcomingMovies()
-        
+
+
     }
 }
