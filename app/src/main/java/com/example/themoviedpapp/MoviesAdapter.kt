@@ -18,8 +18,6 @@ class MoviesAdapter(
 
 
 
-    movies.setLayoutManager(new LinearLayoutManager(this));
-
 
     private var movies: MutableList<Movie>? = null
 
