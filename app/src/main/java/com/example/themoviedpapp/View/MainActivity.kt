@@ -32,9 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         //get viewmodel instance using com.example.themoviedpapp.ViewModel.MyViewModelFactory
         viewModel =
-            ViewModelProvider(this, MyViewModelFactory(MoviesRepository)).get(
-                MainViewModel::class.java
-            )
+            ViewModelProvider(this, MyViewModelFactory(MoviesRepository))[MainViewModel::class.java]
 
         //set recyclerview adapter
         binding.popularMovies.adapter = adapter

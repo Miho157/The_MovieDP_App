@@ -1,5 +1,6 @@
 package com.example.themoviedpapp.ViewModel
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
@@ -19,16 +20,19 @@ class MainViewModel (private val repository: MoviesRepository) : ViewModel() {
     val errorMessage = MutableLiveData<String>()
 
 
+    @SuppressLint("StaticFieldLeak")
     private var popularMovies: RecyclerView? = null
     private var popularMoviesAdapter : MoviesAdapter? = null
     private lateinit var popularMoviesLayoutMgr: LinearLayoutManager
     private var popularMoviesPage = 1
 
+    @SuppressLint("StaticFieldLeak")
     private var topRatedMovies: RecyclerView? = null
     private var topRatedMoviesAdapter : MoviesAdapter? = null
     private lateinit var topRatedMoviesLayoutMgr: LinearLayoutManager
     private var topRatedMoviesPage = 1
 
+    @SuppressLint("StaticFieldLeak")
     private var upcomingMovies: RecyclerView? = null
     private var upcomingMoviesAdapter : MoviesAdapter? = null
     private lateinit var upcomingMoviesLayoutMgr: LinearLayoutManager
@@ -37,7 +41,7 @@ class MainViewModel (private val repository: MoviesRepository) : ViewModel() {
 
 
     fun getPopularMovies() {
-        MoviesRepository.getPopularMovies(
+        repository.getPopularMovies(
             popularMoviesPage,
             ::onPopularMoviesFetched,
             ::onError
@@ -56,7 +60,7 @@ class MainViewModel (private val repository: MoviesRepository) : ViewModel() {
 
     private fun attachPopularMoviesOnScrollListener() {
         popularMovies?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int, context: Context) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
                 // broj filmova u popularMoviesAdapter
                 val totalItemCount = popularMoviesLayoutMgr.itemCount
