@@ -5,64 +5,76 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.themoviedpapp.*
 import com.example.themoviedpapp.Models.Movie
 import com.example.themoviedpapp.Models.MoviesRepository
 import androidx.lifecycle.MutableLiveData
-
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.themoviedpapp.*
+import com.example.themoviedpapp.View.MainActivity
 
 
 class MainViewModel (private val repository: MoviesRepository) : ViewModel() {
 
     val movieList = MutableLiveData<List<Movie>>()
     val errorMessage = MutableLiveData<String>()
-
+    var mainActivity: MainActivity? = null
 
     @SuppressLint("StaticFieldLeak")
     private var popularMovies: RecyclerView? = null
     private var popularMoviesAdapter : MoviesAdapter? = null
     private lateinit var popularMoviesLayoutMgr: LinearLayoutManager
-    private var popularMoviesPage = 1
+    var popularMoviesPage = 1
 
     @SuppressLint("StaticFieldLeak")
     private var topRatedMovies: RecyclerView? = null
     private var topRatedMoviesAdapter : MoviesAdapter? = null
     private lateinit var topRatedMoviesLayoutMgr: LinearLayoutManager
-    private var topRatedMoviesPage = 1
+    var topRatedMoviesPage = 1
 
     @SuppressLint("StaticFieldLeak")
     private var upcomingMovies: RecyclerView? = null
     private var upcomingMoviesAdapter : MoviesAdapter? = null
     private lateinit var upcomingMoviesLayoutMgr: LinearLayoutManager
-    private var upcomingMoviesPage = 1
-
+    var upcomingMoviesPage = 1
 
 
     fun getPopularMovies() {
-        repository.getPopularMovies(
-            popularMoviesPage,
-            ::onPopularMoviesFetched,
+        MoviesRepository.getPopularMovies(
+            upcomingMoviesPage,
+            ::onUpcomingMoviesFetched,
             ::onError
         )
     }
-    public fun setPopularMoviesAdapter(adapter: MoviesAdapter){
-        popularMoviesAdapter = adapter
-    }
-    public fun setTopRatedMoviesAdapter(adapter: MoviesAdapter){
-        topRatedMoviesAdapter = adapter
-    }
-    public fun setUpcomingMoviesAdapter(adapter: MoviesAdapter){
-        upcomingMoviesAdapter = adapter
-    }
-    private fun onPopularMoviesFetched(movies: List<Movie>) {
-        popularMoviesAdapter?.appendMovies(movies)
-        attachPopularMoviesOnScrollListener()
-    }
+
+
+
     private fun onError( context: Context) {
         Toast.makeText(context,"this is toast message",Toast.LENGTH_SHORT).show()
     }
+
+
+
+
+    fun getTopRatedMovies() {
+        MoviesRepository.getTopRatedMovies(
+            upcomingMoviesPage,
+            ::onUpcomingMoviesFetched,
+            ::onError
+        )
+    }
+
+
+    fun getUpcomingMovies() {
+        MoviesRepository.getUpcomingMovies(
+            upcomingMoviesPage,
+            ::onUpcomingMoviesFetched,
+            ::onError
+        )
+    }
+
+
+
 
 
 
@@ -86,13 +98,11 @@ class MainViewModel (private val repository: MoviesRepository) : ViewModel() {
     }
 
 
-    fun getTopRatedMovies() {
-        MoviesRepository.getTopRatedMovies(
-            topRatedMoviesPage,
-            ::onTopRatedMoviesFetched,
-            ::onError
-        )
+    fun onPopularMoviesFetched(movies: List<Movie>) {
+        popularMoviesAdapter?.appendMovies(movies)
+        attachPopularMoviesOnScrollListener()
     }
+
     private fun attachTopRatedMoviesOnScrollListener() {
         topRatedMovies?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int, context: Context) {
@@ -110,17 +120,9 @@ class MainViewModel (private val repository: MoviesRepository) : ViewModel() {
         })
     }
 
-    private fun onTopRatedMoviesFetched(movies: List<Movie>) {
+    fun onTopRatedMoviesFetched(movies: List<Movie>) {
         topRatedMoviesAdapter?.appendMovies(movies)
         attachTopRatedMoviesOnScrollListener()
-    }
-
-    fun getUpcomingMovies() {
-        MoviesRepository.getUpcomingMovies(
-            upcomingMoviesPage,
-            ::onUpcomingMoviesFetched,
-            ::onError
-        )
     }
 
     private fun attachUpcomingMoviesOnScrollListener() {
@@ -140,7 +142,7 @@ class MainViewModel (private val repository: MoviesRepository) : ViewModel() {
         })
     }
 
-    private fun onUpcomingMoviesFetched(movies: List<Movie>) {
+    fun onUpcomingMoviesFetched(movies: List<Movie>) {
         upcomingMoviesAdapter?.appendMovies(movies)
         attachUpcomingMoviesOnScrollListener()
     }
@@ -155,5 +157,7 @@ class MainViewModel (private val repository: MoviesRepository) : ViewModel() {
         intent.putExtra(MOVIE_OVERVIEW, movie.overview)
         context.startActivity(intent)
     }
+
+
 
 }

@@ -1,13 +1,16 @@
 package com.example.themoviedpapp.Models
 
 import android.content.Context
+import android.util.Log
 import com.example.themoviedpapp.GetMovieResponses
+import com.example.themoviedpapp.View.MainActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import kotlin.reflect.KFunction1
+import kotlin.reflect.KFunction2
 
 object MoviesRepository {
 
@@ -27,9 +30,6 @@ object MoviesRepository {
         onSuccess: (movies: List<Movie>) -> Unit,
         onError: KFunction1<Context, Unit>
     ) {
-
-
-
         api.getPopularMovies(page = page)
             .enqueue(object : Callback<GetMovieResponses> {
                 override fun onResponse(
@@ -38,18 +38,20 @@ object MoviesRepository {
                 ) {
                     if (response.isSuccessful) {
                         val responseBody = response.body()
+
                         if (responseBody != null) {
                             onSuccess.invoke(responseBody.movies)
                         } else {
                             onError.invoke()
                         }
+                    } else {
+                        onError.invoke()
                     }
                 }
+
                 override fun onFailure(call: Call<GetMovieResponses>, t: Throwable) {
                     onError.invoke()
                 }
-
-
             })
     }
 
@@ -121,3 +123,4 @@ object MoviesRepository {
 private fun <P1, R> (KFunction1<P1, R>).invoke() {
 
 }
+
