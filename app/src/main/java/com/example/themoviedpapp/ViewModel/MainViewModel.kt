@@ -47,7 +47,15 @@ class MainViewModel (private val repository: MoviesRepository) : ViewModel() {
             ::onError
         )
     }
-
+    public fun setPopularMoviesAdapter(adapter: MoviesAdapter){
+        popularMoviesAdapter = adapter
+    }
+    public fun setTopRatedMoviesAdapter(adapter: MoviesAdapter){
+        topRatedMoviesAdapter = adapter
+    }
+    public fun setUpcomingMoviesAdapter(adapter: MoviesAdapter){
+        upcomingMoviesAdapter = adapter
+    }
     private fun onPopularMoviesFetched(movies: List<Movie>) {
         popularMoviesAdapter?.appendMovies(movies)
         attachPopularMoviesOnScrollListener()

@@ -48,7 +48,9 @@ class MainActivity : AppCompatActivity() {
         top_rated_movies.layoutManager = LinearLayoutManager(this)
         upcoming_movies.layoutManager = LinearLayoutManager(this)
 
-
+        viewModel.setPopularMoviesAdapter(adapter)
+        viewModel.setTopRatedMoviesAdapter(adapter)
+        viewModel.setUpcomingMoviesAdapter(adapter)
         viewModel.errorMessage.observe(this, Observer {
             Log.d(TAG, "errorMessage: $it")
         })
